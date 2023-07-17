@@ -9,15 +9,20 @@
 		<script src="archimate.js"></script>
 		<svg id="archimate" width="1px" height="1px"></svg>
 		<script>
-			var svg = svgen("svg", { width:690, height:520, id:"archimate" });
+			var svg = svgen("svg", { width:1320, height:1000, id:"archimate" });
 			var htmlElement = document.getElementById('archimate');
 			var diagram = new archiMateDiagram(svg);
 
+			var outerElement = diagram.addElement("Test", element.node, 1, 0);
+			outerElement.addElement("This is a very long label", element.businessObject, 1, 0);
+			outerElement.addElement("forceWrapCamelCaseText", element.dataObject, 1, 1);
+			outerElement.addElement("A short label", element.applicationComponent, 0, 1);
+			diagram.addElement("Start", element.applicationComponent, 0, 0);
+
+			diagram.addRelationship("", "Start", "Test", relationship.serving);
+
 			diagram.addGridlines();
-			diagram.addElement(0, 0, 1, 2, 2, element.node, "Test");
-			diagram.addElement(1, 0, 0, 1, 1, element.businessObject, "This is a very long label");
-			diagram.addElement(1, 1, 0, 1, 1, element.dataObject, "forceWrapCamelCaseText");
-			diagram.addElement(0, 1, 0, 1, 1, element.applicationComponent, "A short label");
+			diagram.render();
 
 			htmlElement.parentNode.replaceChild(svg, htmlElement);
 		</script>
