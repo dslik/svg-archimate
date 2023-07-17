@@ -1,0 +1,27 @@
+<!DOCTYPE HTML> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head> 
+	<head>
+    	<title>ArchiMate Diagram Test</title>
+    </head>
+	<meta http-equiv="content-type"
+		content="application/xhtml+xml; charset=utf-8"/>
+	<body bgcolor="#FFFFFF">
+		<script src="archimate.js"></script>
+		<svg id="archimate" width="1px" height="1px"></svg>
+		<script>
+			var svg = svgen("svg", { width:690, height:520, id:"archimate" });
+			var htmlElement = document.getElementById('archimate');
+			var diagram = new archiMateDiagram(svg);
+
+			diagram.addGridlines();
+			diagram.addElement(0, 0, 1, 2, 2, element.node, "Test");
+			diagram.addElement(1, 0, 0, 1, 1, element.businessObject, "This is a very long label");
+			diagram.addElement(1, 1, 0, 1, 1, element.dataObject, "forceWrapCamelCaseText");
+			diagram.addElement(0, 1, 0, 1, 1, element.applicationComponent, "A short label");
+
+			htmlElement.parentNode.replaceChild(svg, htmlElement);
+		</script>
+	</body>
+</html>
+
+
