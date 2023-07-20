@@ -20,6 +20,8 @@
 			diagram.addElement("Start", element.applicationComponent, 0, 0);
 
 			diagram.addRelationship("", "Start", "Test", relationship.serving);
+			diagram.addRelationship("", "A short label", "forceWrapCamelCaseText", relationship.composition);
+			diagram.addRelationship("", "This is a very long label", "forceWrapCamelCaseText", relationship.access);
 
 			diagram.addGridlines();
 			diagram.render();

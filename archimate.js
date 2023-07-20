@@ -7,13 +7,13 @@
 // ArchiMate elements
 class element {
     // Create new instances of the same class as static attributes
-    static businessObject = new element("businessObject")
-    static dataObject = new element("dataObject")
-    static applicationComponent = new element("applicationComponent")
-    static node = new element("node")
+    static businessObject = new element("businessObject");
+    static dataObject = new element("dataObject");
+    static applicationComponent = new element("applicationComponent");
+    static node = new element("node");
 
     constructor(name) {
-       this.name = name
+       this.name = name;
    }
 }
 
@@ -54,11 +54,12 @@ class archiMateElement {
 // ArchiMate relationships
 class relationship {
     // Create new instances of the same class as static attributes
-    static composition = new relationship("composition")
-    static serving = new relationship("serving")
+    static composition = new relationship("composition");
+    static serving = new relationship("serving");
+    static access = new relationship("access");
 
     constructor(name) {
-       this.name = name
+       this.name = name;
    }
 }
 
@@ -407,16 +408,86 @@ class archiMateDiagram {
         svg.appendChild(group)        
     }
 
-    #drawRelationship(relationship) {
-       var firstBBox = this.#getElementBBox(relationship.firstElement);
-       var secondBBox = this.#getElementBBox(relationship.secondElement);
+    #drawRelationship(rel) {
+        var firstBBox = this.#getElementBBox(rel.firstElement);
+        var secondBBox = this.#getElementBBox(rel.secondElement);
 
-       this.svg.appendChild(svgen("line", { x1: firstBBox.x,
-                            y1: firstBBox.y,
-                            x2: secondBBox.x,
-                            y2: secondBBox.y,
+        // Determine the orientation of the source and destination
+        var startCentreX = firstBBox.x + firstBBox.width / 2;
+        var startCentreY = firstBBox.y + firstBBox.height / 2;
+        var endCentreX = secondBBox.x + secondBBox.width / 2;
+        var endCentreY = secondBBox.y + secondBBox.height / 2;
+
+        var xDirection;
+        var yDirection;
+        var angle = 0;
+        var startX = startCentreX;
+        var startY = startCentreY;
+        var endX = endCentreX;
+        var endY = endCentreY;
+
+        if(startCentreX < endCentreX)
+        {
+            xDirection = "right";
+
+            if(secondBBox.y < startCentreY && secondBBox.y + secondBBox.height > startCentreY)
+            {
+                startX = firstBBox.x + firstBBox.width;
+                startY = startCentreY;
+                endX = secondBBox.x;
+                endY = startCentreY;
+
+                angle = 0;
+            }
+        }
+        else
+        {
+            if(startCentreX > endCentreX)
+            {
+                xDirection = "left";
+            }
+            else
+            {
+                if(startCentreY < endCentreY)
+                {
+                    yDirection = "down";
+
+                    startX = startCentreX;
+                    startY = firstBBox.y + firstBBox.height;
+                    endX = endCentreX;
+                    endY = secondBBox.y;
+
+                    angle = 90;
+                }
+                else
+                {
+                    yDirection = "up";
+                }
+            }
+        }
+
+        if(rel.relationshipType.name == "access")
+        {
+            this.svg.appendChild(svgen("line", { x1: startX,
+                            y1: startY,
+                            x2: endX,
+                            y2: endY,
+                            stroke: "#000000",
+                            "stroke-width": 2,
+                            "stroke-dasharray": "2,2" })); 
+        }
+        else
+        {
+            this.svg.appendChild(svgen("line", { x1: startX,
+                            y1: startY,
+                            x2: endX,
+                            y2: endY,
                             stroke: "#000000",
                             "stroke-width": 2 })); 
+        }
+
+        // Draw arrow
+        this.svg.appendChild(this.#drawArrow(endX, endY, angle, rel.relationshipType));
    }
 
     getElementFillColor(elementType) {
@@ -448,6 +519,29 @@ class archiMateDiagram {
         }
 
         return(fillColor);
+    }
+
+    #drawArrow(x, y, angle, relType) {
+        var arrowHead = svgen('g', {transform:"translate(" + x.toString() + " " + y.toString() + ") rotate(" + angle.toString() + " 0 0)", stroke: "#000000", "stroke-width": 1, fill: "none" });
+
+        if(relType.name == "serving")
+        {
+            arrowHead.appendChild(svgen("line", { x1: 0, y1: 0, x2: -15, y2: -7 }));
+            arrowHead.appendChild(svgen("line", { x1: 0, y1: 0, x2: -15, y2: 7 }));
+        }
+
+        if(relType.name == "composition")
+        {
+            arrowHead.appendChild(svgen("polyline", { points: "0,0 -15,-7 -30,0 -15,7 0,0", fill: "#000000" }));
+        }
+
+        if(relType.name == "access")
+        {
+            arrowHead.appendChild(svgen("line", { x1: 0, y1: 0, x2: -10, y2: -5 }));
+            arrowHead.appendChild(svgen("line", { x1: 0, y1: 0, x2: -10, y2: 5 }));
+        }
+
+        return(arrowHead);
     }
 
     #drawIcon(elementType, width, fillColor) {
