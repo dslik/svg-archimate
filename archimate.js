@@ -6,14 +6,56 @@
 // ----------------------------------------------------------------------------------------
 // ArchiMate elements
 class element {
-    // Create new instances of the same class as static attributes
-    static businessObject = new element("businessObject");
-    static dataObject = new element("dataObject");
-    static applicationComponent = new element("applicationComponent");
-    static node = new element("node");
+    // Core Elements Column 1
+    static location = new element("location", "#FFAA55");
+    static businessActor = new element("businessActor", "#FEF7AE");
+    static businessRole = new element("businessRole", "#FEF7AE");
+    static businessCollaboration = new element("businessCollaboration", "#FEF7AE");
+    static businessInterface = new element("businessInterface", "#FEF7AE");
+    static businessProcess = new element("businessProcess", "#FEF7AE");
+    static businessFunction = new element("businessFunction", "#FEF7AE");
+    static businessInteraction = new element("businessInteraction", "#FEF7AE");
+    static businessService = new element("businessService", "#FEF7AE");
+    static businessEvent = new element("businessEvent", "#FEF7AE");
+    static businessObject = new element("businessObject", "#FEF7AE");
+    static contract = new element("contract", "#FEF7AE");
+    static representation = new element("representation", "#FEF7AE");
+    static product = new element("product", "#FEF7AE");
 
-    constructor(name) {
+    // Core Elements Column 2
+    static grouping = new element("grouping", "#FFFFFF");
+    static applicationComponent = new element("applicationComponent", "#AEFEFE");
+    static applicationCollaboration = new element("applicationCollaboration", "#AEFEFE");
+    static applicationInterface = new element("applicationInterface", "#AEFEFE");
+    static applicationProcess = new element("applicationProcess", "#AEFEFE");
+    static applicationFunction = new element("applicationFunction", "#AEFEFE");
+    static applicationInteraction = new element("applicationInteraction", "#AEFEFE");
+    static applicationService = new element("applicationService", "#AEFEFE");
+    static applicationEvent = new element("applicationEvent", "#AEFEFE");
+    static dataObject = new element("dataObject", "#AEFEFE");
+    static facility = new element("facility", "#AEF8AF");
+    static equipment = new element("equipment", "#AEF8AF");
+    static material = new element("material", "#AEF8AF");
+
+    // Core Elements Column 3
+    static node = new element("node", "#AEF8AF");
+    static device = new element("device", "#AEF8AF");
+    static systemSoftware = new element("systemSoftware", "#AEF8AF");
+    static technologyCollaberation = new element("technologyCollaberation", "#AEF8AF");
+    static technologyInterface = new element("technologyInterface", "#AEF8AF");
+    static technologyProcess = new element("technologyProcess", "#AEF8AF");
+    static technologyFunction = new element("technologyFunction", "#AEF8AF");
+    static technologyInteraction = new element("technologyInteraction", "#AEF8AF");
+    static technologyService = new element("technologyService", "#AEF8AF");
+    static technologyEvent = new element("technologyEvent", "#AEF8AF");
+    static artifact = new element("artifact", "#AEF8AF");
+    static communicationNetwork = new element("communicationNetwork", "#AEF8AF");
+    static path = new element("path", "#AEF8AF");
+    static distributionNetwork = new element("distributionNetwork", "#AEF8AF");
+
+    constructor(name, colour) {
        this.name = name;
+       this.colour = colour;
    }
 }
 
@@ -318,7 +360,7 @@ class archiMateDiagram {
 
         var group = svgen('g', {transform:"translate(" + xPos.toString() + " " + yPos.toString() + ")" });
     
-        var fillColor = this.getElementFillColor(elementType);
+        var fillColor = elementType.colour;
 
         group.appendChild(svgen("rect", { x: 0,
                                           y: 0,
@@ -490,37 +532,6 @@ class archiMateDiagram {
         this.svg.appendChild(this.#drawArrow(endX, endY, angle, rel.relationshipType));
    }
 
-    getElementFillColor(elementType) {
-        var fillColor = "#FFFFFF";
-
-        if(elementType.name.startsWith("application") || elementType.name == "dataObject")
-        {
-            fillColor = "#AEFEFE";
-        }
-
-        if(elementType.name.startsWith("business") || elementType.name == "contract" || elementType.name == "representation" || elementType.name == "product")
-        {
-            fillColor = "#FEF7AE";
-        }
-
-        if(elementType.name.startsWith("technology") ||
-           elementType.name == "facility" ||
-           elementType.name == "equipment" ||
-           elementType.name == "material" ||
-           elementType.name == "node" ||
-           elementType.name == "device" ||
-           elementType.name == "systemSoftware" ||
-           elementType.name == "artifact" ||
-           elementType.name == "communicationNetwork" ||
-           elementType.name == "path" ||
-           elementType.name == "distirbutionNetwork")
-        {
-            fillColor = "#AEF8AF";
-        }
-
-        return(fillColor);
-    }
-
     #drawArrow(x, y, angle, relType) {
         var arrowHead = svgen('g', {transform:"translate(" + x.toString() + " " + y.toString() + ") rotate(" + angle.toString() + " 0 0)", stroke: "#000000", "stroke-width": 1, fill: "none" });
 
@@ -547,38 +558,37 @@ class archiMateDiagram {
     #drawIcon(elementType, width, fillColor) {
         var icon = svgen('g', {transform:"translate(" + width + " " + 0 + ")", stroke: "#000000", "stroke-width": 0.75, fill: fillColor });
 
-        if(elementType.name == "applicationComponent")
-        {
-            icon.appendChild(svgen("rect", { x: -17, y: 0 + 5, width: 12, height: 12, }));
-            icon.appendChild(svgen("rect", { x: -20, y: 0 + 7, width: 6, height: 3 }));
-            icon.appendChild(svgen("rect", { x: -20, y: 0 + 12, width: 6, height: 3 }));
-        }
-
-        if(elementType.name == "dataObject" || elementType.name == "businessObject")
-        {
-            icon.appendChild(svgen("rect", { x: -20, y: 0 + 5, width: 15, height: 12 }));
-            icon.appendChild(svgen("rect", { x: -20,  y: 0 + 5, width: 15, height: 3 }));
-        }
-
-        if(elementType.name == "node")
-        {
-            // Front box
-            icon.appendChild(svgen("rect", { x: -21, y: 8, width: 12, height: 12 }));
-
-            // Top left line
-            icon.appendChild(svgen("line", { x1: -21, y1: 8, x2: -16, y2: 5 }));
-
-            // Top right line
-            icon.appendChild(svgen("line", { x1: -9, y1: 8, x2: -5, y2: 5 }));
-
-            // Top connecting line
-            icon.appendChild(svgen("line", { x1: -16, y1: 5, x2: -5, y2: 5 }));
-
-            // Bottom right line
-            icon.appendChild(svgen("line", { x1: -9, y1: 20, x2: -5, y2: 17 }));
-
-            // Left connecting line
-            icon.appendChild(svgen("line", { x1: -5, y1: 5, x2: -5, y2: 17 }));
+        switch(elementType.name) {
+            case "businessActor":
+                icon.appendChild(svgen("circle", { cx: -10, cy: 10, r: 5 }));
+                icon.appendChild(svgen("line", { x1: -10, y1: 15, x2: -10, y2: 20, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -17, y1: 17, x2: -3, y2: 17, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -10, y1: 20, x2: -17, y2: 25, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -10, y1: 20, x2: -3, y2: 25, "stroke-width": 1.3 }));
+                break;
+            case "businessCollaboration":
+            case "applicationCollaboration":
+                icon.appendChild(svgen("circle", { cx: -18, cy: 12, r: 7, fill: "none" }));
+                icon.appendChild(svgen("circle", { cx: -12, cy: 12, r: 7, fill: "none" }));
+                break;
+            case "applicationComponent":
+                icon.appendChild(svgen("rect", { x: -17, y: 0 + 5, width: 12, height: 12, }));
+                icon.appendChild(svgen("rect", { x: -20, y: 0 + 7, width: 6, height: 3 }));
+                icon.appendChild(svgen("rect", { x: -20, y: 0 + 12, width: 6, height: 3 }));
+                break;
+            case "dataObject":
+            case "businessObject":
+                icon.appendChild(svgen("rect", { x: -20, y: 0 + 5, width: 15, height: 12 }));
+                icon.appendChild(svgen("rect", { x: -20,  y: 0 + 5, width: 15, height: 3 }));
+                break;
+            case "node":
+                icon.appendChild(svgen("rect", { x: -21, y: 8, width: 12, height: 12 }));   // Front box
+                icon.appendChild(svgen("line", { x1: -21, y1: 8, x2: -16, y2: 5 }));        // Top left line
+                icon.appendChild(svgen("line", { x1: -9, y1: 8, x2: -5, y2: 5 }));          // Top right line
+                icon.appendChild(svgen("line", { x1: -16, y1: 5, x2: -5, y2: 5 }));         // Top connecting line
+                icon.appendChild(svgen("line", { x1: -9, y1: 20, x2: -5, y2: 17 }));        // Bottom right line
+                icon.appendChild(svgen("line", { x1: -5, y1: 5, x2: -5, y2: 17 }));         // Left connecting line
+                break;
         }
 
         return(icon);
