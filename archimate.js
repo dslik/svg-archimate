@@ -12,11 +12,11 @@ class element {
     static businessRole = new element("businessRole", "#FEF7AE");
     static businessCollaboration = new element("businessCollaboration", "#FEF7AE");
     static businessInterface = new element("businessInterface", "#FEF7AE");
-    static businessProcess = new element("businessProcess", "#FEF7AE");
-    static businessFunction = new element("businessFunction", "#FEF7AE");
-    static businessInteraction = new element("businessInteraction", "#FEF7AE");
-    static businessService = new element("businessService", "#FEF7AE");
-    static businessEvent = new element("businessEvent", "#FEF7AE");
+    static businessProcess = new element("businessProcess", "#FEF7AE", true);
+    static businessFunction = new element("businessFunction", "#FEF7AE", true);
+    static businessInteraction = new element("businessInteraction", "#FEF7AE", true);
+    static businessService = new element("businessService", "#FEF7AE", true);
+    static businessEvent = new element("businessEvent", "#FEF7AE", true);
     static businessObject = new element("businessObject", "#FEF7AE");
     static contract = new element("contract", "#FEF7AE");
     static representation = new element("representation", "#FEF7AE");
@@ -27,11 +27,11 @@ class element {
     static applicationComponent = new element("applicationComponent", "#AEFEFE");
     static applicationCollaboration = new element("applicationCollaboration", "#AEFEFE");
     static applicationInterface = new element("applicationInterface", "#AEFEFE");
-    static applicationProcess = new element("applicationProcess", "#AEFEFE");
-    static applicationFunction = new element("applicationFunction", "#AEFEFE");
-    static applicationInteraction = new element("applicationInteraction", "#AEFEFE");
-    static applicationService = new element("applicationService", "#AEFEFE");
-    static applicationEvent = new element("applicationEvent", "#AEFEFE");
+    static applicationProcess = new element("applicationProcess", "#AEFEFE", true);
+    static applicationFunction = new element("applicationFunction", "#AEFEFE", true);
+    static applicationInteraction = new element("applicationInteraction", "#AEFEFE", true);
+    static applicationService = new element("applicationService", "#AEFEFE", true);
+    static applicationEvent = new element("applicationEvent", "#AEFEFE", true);
     static dataObject = new element("dataObject", "#AEFEFE");
     static facility = new element("facility", "#AEF8AF");
     static equipment = new element("equipment", "#AEF8AF");
@@ -43,19 +43,20 @@ class element {
     static systemSoftware = new element("systemSoftware", "#AEF8AF");
     static technologyCollaberation = new element("technologyCollaberation", "#AEF8AF");
     static technologyInterface = new element("technologyInterface", "#AEF8AF");
-    static technologyProcess = new element("technologyProcess", "#AEF8AF");
-    static technologyFunction = new element("technologyFunction", "#AEF8AF");
-    static technologyInteraction = new element("technologyInteraction", "#AEF8AF");
-    static technologyService = new element("technologyService", "#AEF8AF");
-    static technologyEvent = new element("technologyEvent", "#AEF8AF");
+    static technologyProcess = new element("technologyProcess", "#AEF8AF", true);
+    static technologyFunction = new element("technologyFunction", "#AEF8AF", true);
+    static technologyInteraction = new element("technologyInteraction", "#AEF8AF", true);
+    static technologyService = new element("technologyService", "#AEF8AF", true);
+    static technologyEvent = new element("technologyEvent", "#AEF8AF", true);
     static artifact = new element("artifact", "#AEF8AF");
     static communicationNetwork = new element("communicationNetwork", "#AEF8AF");
     static path = new element("path", "#AEF8AF");
     static distributionNetwork = new element("distributionNetwork", "#AEF8AF");
 
-    constructor(name, colour) {
+    constructor(name, colour, rounded = false) {
        this.name = name;
        this.colour = colour;
+       this.rounded = rounded;
    }
 }
 
@@ -71,6 +72,8 @@ class archiMateElement {
 
         this.spanX = 1;
         this.spanY = 1;
+
+        this.padding = 5;
     }
 
     addElement(label, elementType, x, y) {
@@ -362,12 +365,25 @@ class archiMateDiagram {
     
         var fillColor = elementType.colour;
 
-        group.appendChild(svgen("rect", { x: 0,
-                                          y: 0,
-                                          width: totalWidth,
-                                          height: totalHeight,
-                                          stroke: "#000000",
-                                          fill: fillColor }));
+        if(elementType.rounded == false)
+        {
+            group.appendChild(svgen("rect", { x: 0,
+                                              y: 0,
+                                              width: totalWidth,
+                                              height: totalHeight,
+                                              stroke: "#000000",
+                                              fill: fillColor }));
+        }
+        else
+        {
+            group.appendChild(svgen("rect", { x: 0,
+                                              y: 0,
+                                              rx: 15,
+                                              width: totalWidth,
+                                              height: totalHeight,
+                                              stroke: "#000000",
+                                              fill: fillColor }));
+        }
 
         group.appendChild(this.#drawIcon(elementType, totalWidth, fillColor));
 
@@ -381,7 +397,7 @@ class archiMateDiagram {
             textY = 15;
         }
 
-        if(textWidth >= totalWidth)
+        if(textWidth >= totalWidth - element.padding)
         {
             if(textWidth >= totalWidth * 2)
             {
@@ -479,14 +495,25 @@ class archiMateDiagram {
                 endX = secondBBox.x;
                 endY = startCentreY;
 
-                angle = 0;
             }
+
+            angle = 0;
         }
         else
         {
             if(startCentreX > endCentreX)
             {
                 xDirection = "left";
+
+                if(secondBBox.y < startCentreY && secondBBox.y + secondBBox.height < startCentreY)
+                {
+                    startX = firstBBox.x;
+                    startY = endCentreY;
+                    endX = secondBBox.x + secondBBox.width;
+                    endY = endCentreY;
+                }
+
+                angle = 180;
             }
             else
             {
@@ -568,8 +595,24 @@ class archiMateDiagram {
                 break;
             case "businessCollaboration":
             case "applicationCollaboration":
+            case "technologyCollaberation":
                 icon.appendChild(svgen("circle", { cx: -18, cy: 12, r: 7, fill: "none" }));
                 icon.appendChild(svgen("circle", { cx: -12, cy: 12, r: 7, fill: "none" }));
+                break;
+            case "systemSoftware":
+                icon.appendChild(svgen("circle", { cx: -12, cy: 12, r: 7 }));
+                icon.appendChild(svgen("circle", { cx: -15, cy: 15, r: 7 }));
+                break;
+            case "businessInterface":
+            case "applicationInterface":
+            case "technologyInterface":
+                icon.appendChild(svgen("circle", { cx: -14, cy: 13, r: 8 }));
+                icon.appendChild(svgen("line", { x1: -32, y1: 13, x2: -22, y2: 13 }));
+                break;
+            case "businessProcess":
+            case "applicationProcess":
+            case "technologyProcess":
+                icon.appendChild(svgen("polyline", { points: "-6,12 -12,6 -12,10 -24,10 -24,14 -12,14 -12,18 -6,12"}));
                 break;
             case "applicationComponent":
                 icon.appendChild(svgen("rect", { x: -17, y: 0 + 5, width: 12, height: 12, }));

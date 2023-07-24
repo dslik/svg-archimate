@@ -10,7 +10,7 @@
 		<svg id="archimate" width="1px" height="1px"></svg>
 		<svg id="elements" width="1px" height="1px"></svg>
 		<script>
-			var svg = svgen("svg", { width:1320, height:520, id:"archimate" });
+			var svg = svgen("svg", { width:1000, height:520, id:"archimate" });
 			var htmlElement = document.getElementById('archimate');
 			var diagram = new archiMateDiagram(svg);
 
@@ -19,10 +19,12 @@
 			outerElement.addElement("forceWrapCamelCaseText", element.dataObject, 1, 1);
 			outerElement.addElement("A short label", element.applicationComponent, 0, 1);
 			diagram.addElement("Start", element.applicationComponent, 0, 0);
+			diagram.addElement("End", element.applicationComponent, 0, 1);
 
 			diagram.addRelationship("", "Start", "Test", relationship.serving);
 			diagram.addRelationship("", "A short label", "forceWrapCamelCaseText", relationship.composition);
 			diagram.addRelationship("", "This is a very long label", "forceWrapCamelCaseText", relationship.access);
+			diagram.addRelationship("", "Test", "End", relationship.serving);
 
 			diagram.addGridlines();
 			diagram.render();
@@ -30,7 +32,7 @@
 			htmlElement.parentNode.replaceChild(svg, htmlElement);
 
 			// Create a diagram showing all of the supported element types
-			svg = svgen("svg", { width:1000, height:1000, id:"elements" });
+			svg = svgen("svg", { width:1000, height:2000, id:"elements" });
 			htmlElement = document.getElementById('elements');
 			diagram = new archiMateDiagram(svg);
 
@@ -38,13 +40,21 @@
 			diagram.addElement("Business Actor", element.businessActor, 0, 1);
 
 			diagram.addElement("Business Collaboration", element.businessCollaboration, 0, 3);
+			diagram.addElement("Business Interface", element.businessInterface, 0, 4);
+			diagram.addElement("Business Process", element.businessProcess, 0, 5);
 
 			// Column 2
 			diagram.addElement("Application Component", element.applicationComponent, 1, 2);
 			diagram.addElement("Application Collaboration", element.applicationCollaboration, 1, 3);
+			diagram.addElement("Application Interface", element.applicationInterface, 1, 4);
+			diagram.addElement("Application Process", element.applicationProcess, 1, 5);
 
 			// Column 3
 			diagram.addElement("Node", element.node, 2, 0);
+			diagram.addElement("System Software", element.systemSoftware, 2, 2);
+			diagram.addElement("Technology Collaboration", element.technologyCollaberation, 2, 3);
+			diagram.addElement("Technology Interface", element.technologyInterface, 2, 4);
+			diagram.addElement("Technology Process", element.technologyProcess, 2, 5);
 
 			diagram.addGridlines();
 			diagram.render();
