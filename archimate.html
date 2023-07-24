@@ -32,29 +32,56 @@
 			htmlElement.parentNode.replaceChild(svg, htmlElement);
 
 			// Create a diagram showing all of the supported element types
-			svg = svgen("svg", { width:1000, height:2000, id:"elements" });
+			svg = svgen("svg", { width:1000, height:3400, id:"elements" });
 			htmlElement = document.getElementById('elements');
 			diagram = new archiMateDiagram(svg);
 
 			// Column 1
+			diagram.addElement("Location", element.location, 0, 0);
 			diagram.addElement("Business Actor", element.businessActor, 0, 1);
-
+			diagram.addElement("Business Role", element.businessRole, 0, 2);
 			diagram.addElement("Business Collaboration", element.businessCollaboration, 0, 3);
 			diagram.addElement("Business Interface", element.businessInterface, 0, 4);
 			diagram.addElement("Business Process", element.businessProcess, 0, 5);
+			diagram.addElement("Business Function", element.businessFunction, 0, 6);
+			diagram.addElement("Business Interaction", element.businessInteraction, 0, 7);
+			diagram.addElement("Business Service", element.businessService, 0, 8);
+			diagram.addElement("Business Event", element.businessEvent, 0, 9);
+			diagram.addElement("Business Object", element.businessObject, 0, 10);
+			diagram.addElement("Contract", element.contract, 0, 11);
+			diagram.addElement("Representation", element.representation, 0, 12);
+			diagram.addElement("Product", element.product, 0, 13);
 
 			// Column 2
+			diagram.addElement("Grouping", element.grouping, 1, 0);
 			diagram.addElement("Application Component", element.applicationComponent, 1, 2);
 			diagram.addElement("Application Collaboration", element.applicationCollaboration, 1, 3);
 			diagram.addElement("Application Interface", element.applicationInterface, 1, 4);
 			diagram.addElement("Application Process", element.applicationProcess, 1, 5);
+			diagram.addElement("Application Function", element.applicationFunction, 1, 6);
+			diagram.addElement("Application Interaction", element.applicationInteraction, 1, 7);
+			diagram.addElement("Application Service", element.applicationService, 1, 8);
+			diagram.addElement("Application Event", element.applicationEvent, 1, 9);
+			diagram.addElement("Data Object", element.dataObject, 1, 10);
+			diagram.addElement("Facility", element.facility, 1, 11);
+			diagram.addElement("Equipment", element.equipment, 1, 12);
+			diagram.addElement("Material", element.material, 1, 13);
 
 			// Column 3
 			diagram.addElement("Node", element.node, 2, 0);
+			diagram.addElement("Device", element.device, 2, 1);
 			diagram.addElement("System Software", element.systemSoftware, 2, 2);
 			diagram.addElement("Technology Collaboration", element.technologyCollaberation, 2, 3);
 			diagram.addElement("Technology Interface", element.technologyInterface, 2, 4);
 			diagram.addElement("Technology Process", element.technologyProcess, 2, 5);
+			diagram.addElement("Technology Function", element.technologyFunction, 2, 6);
+			diagram.addElement("Technology Interaction", element.technologyInteraction, 2, 7);
+			diagram.addElement("Technology Service", element.technologyService, 2, 8);
+			diagram.addElement("Technology Event", element.technologyEvent, 2, 9);
+			diagram.addElement("Artifact", element.artifact, 2, 10);
+			diagram.addElement("Communication Network", element.communicationNetwork, 2, 11);
+			diagram.addElement("Path", element.path, 2, 12);
+			diagram.addElement("Distribution Network", element.distributionNetwork, 2, 13);
 
 			diagram.addGridlines();
 			diagram.render();

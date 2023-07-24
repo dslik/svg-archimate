@@ -365,24 +365,37 @@ class archiMateDiagram {
     
         var fillColor = elementType.colour;
 
-        if(elementType.rounded == false)
+        if(elementType.name == "grouping")
         {
-            group.appendChild(svgen("rect", { x: 0,
-                                              y: 0,
-                                              width: totalWidth,
-                                              height: totalHeight,
-                                              stroke: "#000000",
-                                              fill: fillColor }));
+                group.appendChild(svgen("rect", { x: 0,
+                                                  y: 0,
+                                                  width: totalWidth,
+                                                  height: totalHeight,
+                                                  stroke: "#000000",
+                                                  fill: fillColor,
+                                                  "stroke-dasharray": "6,2" }));
         }
         else
         {
-            group.appendChild(svgen("rect", { x: 0,
-                                              y: 0,
-                                              rx: 15,
-                                              width: totalWidth,
-                                              height: totalHeight,
-                                              stroke: "#000000",
-                                              fill: fillColor }));
+            if(elementType.rounded == false)
+            {
+                group.appendChild(svgen("rect", { x: 0,
+                                                  y: 0,
+                                                  width: totalWidth,
+                                                  height: totalHeight,
+                                                  stroke: "#000000",
+                                                  fill: fillColor }));
+            }
+            else
+            {
+                group.appendChild(svgen("rect", { x: 0,
+                                                  y: 0,
+                                                  rx: 14,
+                                                  width: totalWidth,
+                                                  height: totalHeight,
+                                                  stroke: "#000000",
+                                                  fill: fillColor }));
+            }
         }
 
         group.appendChild(this.#drawIcon(elementType, totalWidth, fillColor));
@@ -488,7 +501,7 @@ class archiMateDiagram {
         {
             xDirection = "right";
 
-            if(secondBBox.y < startCentreY && secondBBox.y + secondBBox.height > startCentreY)
+            if(firstBBox.y >= secondBBox.y && firstBBox.y + firstBBox.height <= secondBBox.y + secondBBox.height)
             {
                 startX = firstBBox.x + firstBBox.width;
                 startY = startCentreY;
@@ -505,7 +518,7 @@ class archiMateDiagram {
             {
                 xDirection = "left";
 
-                if(secondBBox.y < startCentreY && secondBBox.y + secondBBox.height < startCentreY)
+                if(secondBBox.y >= firstBBox.y && secondBBox.y + secondBBox.height <= firstBBox.y + firstBBox.height)
                 {
                     startX = firstBBox.x;
                     startY = endCentreY;
@@ -614,15 +627,40 @@ class archiMateDiagram {
             case "technologyProcess":
                 icon.appendChild(svgen("polyline", { points: "-6,12 -12,6 -12,10 -24,10 -24,14 -12,14 -12,18 -6,12"}));
                 break;
+            case "businessFunction":
+            case "applicationFunction":
+            case "technologyFunction":
+                icon.appendChild(svgen("polyline", { points: "-14,6 -6,12 -6,20 -14,14 -22,20 -22,12 -14,6"}));
+                break;
+            case "businessService":
+            case "applicationService":
+            case "technologyService":
+                icon.appendChild(svgen("rect", { x: -24, y: 5, width: 18, height: 12, rx: 5}));
+                break;
             case "applicationComponent":
-                icon.appendChild(svgen("rect", { x: -17, y: 0 + 5, width: 12, height: 12, }));
-                icon.appendChild(svgen("rect", { x: -20, y: 0 + 7, width: 6, height: 3 }));
-                icon.appendChild(svgen("rect", { x: -20, y: 0 + 12, width: 6, height: 3 }));
+                icon.appendChild(svgen("rect", { x: -17, y: 5, width: 12, height: 12, }));
+                icon.appendChild(svgen("rect", { x: -20, y: 7, width: 6, height: 3 }));
+                icon.appendChild(svgen("rect", { x: -20, y: 12, width: 6, height: 3 }));
                 break;
             case "dataObject":
             case "businessObject":
-                icon.appendChild(svgen("rect", { x: -20, y: 0 + 5, width: 15, height: 12 }));
-                icon.appendChild(svgen("rect", { x: -20,  y: 0 + 5, width: 15, height: 3 }));
+                icon.appendChild(svgen("rect", { x: -20, y: 5, width: 15, height: 12 }));
+                icon.appendChild(svgen("rect", { x: -20,  y: 5, width: 15, height: 3 }));
+                break;
+            case "contract":
+                icon.appendChild(svgen("rect", { x: -20, y: 5, width: 15, height: 12 }));
+                icon.appendChild(svgen("rect", { x: -20,  y: 5, width: 15, height: 3 }));
+                icon.appendChild(svgen("rect", { x: -20,  y: 14, width: 15, height: 3 }));
+                break;
+            case "product":
+                icon.appendChild(svgen("rect", { x: -20, y: 5, width: 15, height: 12 }));
+                icon.appendChild(svgen("rect", { x: -20,  y: 5, width: 7, height: 3 }));
+                break;
+            case "grouping":
+                icon.appendChild(svgen("line", { x1: -20, y1: 5, x2: -9, y2: 5, "stroke-dasharray": "2,1" }));
+                icon.appendChild(svgen("line", { x1: -20, y1: 5, x2: -20, y2: 8, "stroke-dasharray": "2,1" }));
+                icon.appendChild(svgen("line", { x1: -9, y1: 5, x2: -9, y2: 8, "stroke-dasharray": "2,1" }));
+                icon.appendChild(svgen("rect", { x: -20, y: 8, width: 15, height: 9, "stroke-dasharray": "2,1" }));
                 break;
             case "node":
                 icon.appendChild(svgen("rect", { x: -21, y: 8, width: 12, height: 12 }));   // Front box
@@ -631,6 +669,12 @@ class archiMateDiagram {
                 icon.appendChild(svgen("line", { x1: -16, y1: 5, x2: -5, y2: 5 }));         // Top connecting line
                 icon.appendChild(svgen("line", { x1: -9, y1: 20, x2: -5, y2: 17 }));        // Bottom right line
                 icon.appendChild(svgen("line", { x1: -5, y1: 5, x2: -5, y2: 17 }));         // Left connecting line
+                break;
+            case "device":
+                icon.appendChild(svgen("rect", { x: -24, y: 5, width: 18, height: 12, rx: 2}));
+                icon.appendChild(svgen("line", { x1: -21, y1: 17, x2: -24, y2: 20 }));
+                icon.appendChild(svgen("line", { x1: -24, y1: 20, x2: -6, y2: 20 }));
+                icon.appendChild(svgen("line", { x1: -9, y1: 17, x2: -6, y2: 20 }));
                 break;
         }
 
