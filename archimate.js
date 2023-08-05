@@ -599,12 +599,19 @@ class archiMateDiagram {
         var icon = svgen('g', {transform:"translate(" + width + " " + 0 + ")", stroke: "#000000", "stroke-width": 0.75, fill: fillColor });
 
         switch(elementType.name) {
+            case "location":
+                icon.appendChild(svgen("path", { d: "M -15 13 C -15 5, -5 5, -5 13 C -5 17, -7 16, -10 22 C -13 16, -15 17, -15 13 "}));
+                break;
             case "businessActor":
                 icon.appendChild(svgen("circle", { cx: -10, cy: 10, r: 5 }));
                 icon.appendChild(svgen("line", { x1: -10, y1: 15, x2: -10, y2: 20, "stroke-width": 1.3 }));
                 icon.appendChild(svgen("line", { x1: -17, y1: 17, x2: -3, y2: 17, "stroke-width": 1.3 }));
                 icon.appendChild(svgen("line", { x1: -10, y1: 20, x2: -17, y2: 25, "stroke-width": 1.3 }));
                 icon.appendChild(svgen("line", { x1: -10, y1: 20, x2: -3, y2: 25, "stroke-width": 1.3 }));
+                break;
+            case "businessRole":
+                icon.appendChild(svgen("path", { d: "M -7 5 L -15 5 C -20 5, -20 15, -15 15 L -7 15 "}));
+                icon.appendChild(svgen("ellipse", { cx: -7, cy: 10, rx: 3, ry: 5 }));
                 break;
             case "businessCollaboration":
             case "applicationCollaboration":
@@ -632,15 +639,32 @@ class archiMateDiagram {
             case "technologyFunction":
                 icon.appendChild(svgen("polyline", { points: "-14,6 -6,12 -6,20 -14,14 -22,20 -22,12 -14,6"}));
                 break;
+            case "businessInteraction":
+            case "applicationInteraction":
+            case "technologyInteraction":
+                icon.appendChild(svgen("path", { d: "M -15 5 C -23 5, -23 15, -15 15 Z "}));
+                icon.appendChild(svgen("path", { d: "M -13 5 C -5 5, -5 15, -13 15 Z "}));
+                break;
             case "businessService":
             case "applicationService":
             case "technologyService":
                 icon.appendChild(svgen("rect", { x: -24, y: 5, width: 18, height: 12, rx: 5}));
                 break;
+            case "businessEvent":
+            case "applicationEvent":
+            case "technologyEvent":
+                icon.appendChild(svgen("path", { d: "M -13 5 C -5 5, -5 15, -13 15 L -23 15 L -20 10 L -23 5 Z "}));
+                break;
             case "applicationComponent":
                 icon.appendChild(svgen("rect", { x: -17, y: 5, width: 12, height: 12, }));
                 icon.appendChild(svgen("rect", { x: -20, y: 7, width: 6, height: 3 }));
                 icon.appendChild(svgen("rect", { x: -20, y: 12, width: 6, height: 3 }));
+                break;
+            case "artifact":
+                icon.appendChild(svgen("path", { d: "M -9 5 L -20 5 L -20 15 L -5 15 L -5 9 L -9 5 L -9 9 L -5 9 "}));
+                break;
+            case "facility":
+                icon.appendChild(svgen("path", { d: "M -22 20 L -22 5 L -19 5 L -19 14 L -14 10 L -14 14 L -9 10 L -9 14 L -4 10 L -4 20 Z"}));
                 break;
             case "dataObject":
             case "businessObject":
