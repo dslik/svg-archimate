@@ -661,7 +661,7 @@ class archiMateDiagram {
                 icon.appendChild(svgen("rect", { x: -20, y: 12, width: 6, height: 3 }));
                 break;
             case "artifact":
-                icon.appendChild(svgen("path", { d: "M -9 5 L -20 5 L -20 15 L -5 15 L -5 9 L -9 5 L -9 9 L -5 9 "}));
+                icon.appendChild(svgen("path", { d: "M -9 5 L -20 5 L -20 16 L -5 16 L -5 9 L -9 5 L -9 9 L -5 9 "}));
                 break;
             case "facility":
                 icon.appendChild(svgen("path", { d: "M -22 20 L -22 5 L -19 5 L -19 14 L -14 10 L -14 14 L -9 10 L -9 14 L -4 10 L -4 20 Z"}));
@@ -699,6 +699,38 @@ class archiMateDiagram {
                 icon.appendChild(svgen("line", { x1: -21, y1: 17, x2: -24, y2: 20 }));
                 icon.appendChild(svgen("line", { x1: -24, y1: 20, x2: -6, y2: 20 }));
                 icon.appendChild(svgen("line", { x1: -9, y1: 17, x2: -6, y2: 20 }));
+                break;
+            case "communicationNetwork":
+                icon.appendChild(svgen("circle", { cx: -7, cy: 7, r: 2, fill: "#000000" }));
+                icon.appendChild(svgen("line", { x1: -7, y1: 7, x2: -14, y2: 7 }));
+                icon.appendChild(svgen("circle", { cx: -14, cy: 7, r: 2, fill: "#000000" }));
+                icon.appendChild(svgen("line", { x1: -14, y1: 7, x2: -17, y2: 14 }));
+                icon.appendChild(svgen("circle", { cx: -17, cy: 14, r: 2, fill: "#000000" }));
+                icon.appendChild(svgen("line", { x1: -17, y1: 14, x2: -10, y2: 14 }));
+                icon.appendChild(svgen("circle", { cx: -10, cy: 14, r: 2, fill: "#000000" }));
+                icon.appendChild(svgen("line", { x1: -10, y1: 14, x2: -7, y2: 7 }));
+                break;
+            case "path":
+                icon.appendChild(svgen("line", { x1: -5, y1: 10, x2: -10, y2: 5, "stroke-width": 1.5 }));
+                icon.appendChild(svgen("line", { x1: -5, y1: 10, x2: -10, y2: 15, "stroke-width": 1.5 }));
+                icon.appendChild(svgen("line", { x1: -9, y1: 10, x2: -12, y2: 10, "stroke-width": 1.5 }));
+                icon.appendChild(svgen("line", { x1: -14, y1: 10, x2: -17, y2: 10, "stroke-width": 1.5 }));
+                icon.appendChild(svgen("line", { x1: -21, y1: 10, x2: -16, y2: 5, "stroke-width": 1.5 }));
+                icon.appendChild(svgen("line", { x1: -21, y1: 10, x2: -16, y2: 15, "stroke-width": 1.5 }));
+                break;
+            case "distributionNetwork":
+                icon.appendChild(svgen("line", { x1: -5, y1: 10, x2: -10, y2: 5, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -5, y1: 10, x2: -10, y2: 15, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -7, y1: 8, x2: -19, y2: 8, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -7, y1: 12, x2: -19, y2: 12, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -21, y1: 10, x2: -16, y2: 5, "stroke-width": 1.3 }));
+                icon.appendChild(svgen("line", { x1: -21, y1: 10, x2: -16, y2: 15, "stroke-width": 1.3 }));
+                break;
+            case "material":
+                icon.appendChild(svgen("path", { d: "M -7 13 L -12 5 L -20 5 L -25 13 L -20 21 L -12 21 Z"}));
+                icon.appendChild(svgen("line", { x1: -10, y1: 13, x2: -13, y2: 8 }));
+                icon.appendChild(svgen("line", { x1: -22, y1: 13, x2: -19, y2: 8 }));
+                icon.appendChild(svgen("line", { x1: -19, y1: 18, x2: -13, y2: 18 }));
                 break;
         }
 
